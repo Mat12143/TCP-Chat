@@ -33,8 +33,11 @@ server.listen()
 
 # Sending Messages To All Connected Clients
 def broadcast(message):
-    for client in users.keys():
-        client.send(message)
+    try:
+        for client in users.keys():
+            client.send(message)
+    except:
+        print(colored("Errore nel inivare i messaggi", "red"))
 
 # Handling Messages From Clients
 def handle(client):
@@ -47,7 +50,7 @@ def handle(client):
             try:
                 message = client.recv(1024)
             except:
-                print(colored("Errore", "red"))
+                print(colored("Errore nel ricevere un messaggio", "red"))
 
             if message.decode("utf-8") == "EXIT":
                     
