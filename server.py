@@ -33,11 +33,12 @@ server.listen()
 
 # Sending Messages To All Connected Clients
 def broadcast(message):
-    try:
-        for client in users.keys():
+    for client in users.keys():
+        try:
             client.send(message)
-    except:
-        print(colored("Errore nel inivare i messaggi", "red"))
+        except:
+            print(colored("Errore nel inivare un messaggio!", "red"))
+            client.close()
 
 # Handling Messages From Clients
 def handle(client):

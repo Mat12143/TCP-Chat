@@ -64,7 +64,7 @@ def write():
 
     while stop_thread == False:
 
-        message = input(">  ")
+        message = input("")
 
         if message == "exit":
 
