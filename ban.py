@@ -1,6 +1,7 @@
 import socket
 import threading
 from termcolor import colored
+from getpass import getpass
 
 stop_thread = False
 exit_volontario = False
@@ -9,11 +10,11 @@ exit_volontario = False
 nickname = input("Choose your nickname: ")
 
 if nickname.lower() == "admin":
-    password = input("Inserisci la password di amministratore: ")
+    password = getpass("Inserisci la password di amministratore: ")
 
 # Connecting To Server
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('127.0.0.1', 55555))
+client.connect(('192.168.2.103', 55555))
 
 # Listening to Server and Sending Nickname
 def receive():
@@ -39,11 +40,12 @@ def receive():
                         client.send("EXIT".encode("utf-8"))
                         stop_thread = True
 
-            elif message == "Conneso al server!":
+            elif message == "Connesso al server!":
                 print(colored((message), "yellow"))
 
             elif "è atterrato!" in message or "è uscito!" in message:
-                print(colored(message, "yellow"))
+                if not nickname in message:
+                    print(colored(message, "yellow"))
 
             elif message == "Un ADMIN è atterrato nella chat!":
 
@@ -62,7 +64,7 @@ def write():
 
     while stop_thread == False:
 
-        message = input("")
+        message = input(">  ")
 
         if message == "exit":
 

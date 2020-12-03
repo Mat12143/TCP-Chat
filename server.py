@@ -1,5 +1,6 @@
 import socket
 import threading, json
+from termcolor import colored
 
 host = '127.0.0.1'
 port = 55555
@@ -37,16 +38,21 @@ def broadcast(message):
 
 # Handling Messages From Clients
 def handle(client):
+
+    global users
+
     while True:
         try:
             # Broadcasting Messages
-            message = client.recv(1024)
+            try:
+                message = client.recv(1024)
+            except:
+                print(colored("Errore", "red"))
 
             if message.decode("utf-8") == "EXIT":
                     
-                del(users[client])
                 broadcast('{} è uscito!'.format(users[client]).encode('utf-8'))
-                print(users)
+                del(users[client])
                 break
 
             broadcast(message)
@@ -82,6 +88,7 @@ def receive():
                 
             else:
                 broadcast("Un ADMIN è atterrato nella chat!".encode("utf-8"))
+                client.send("")
 
         elif nickname in banned:
 
